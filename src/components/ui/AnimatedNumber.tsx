@@ -9,6 +9,7 @@ interface AnimatedNumberProps {
   prefix?: string;
   suffix?: string;
   className?: string;
+  formatter?: (value: number) => string;
 }
 
 export function AnimatedNumber({
@@ -18,6 +19,7 @@ export function AnimatedNumber({
   prefix = "",
   suffix = "",
   className,
+  formatter,
 }: AnimatedNumberProps) {
   const [display, setDisplay] = useState(0);
   const startRef = useRef(0);
@@ -44,9 +46,9 @@ export function AnimatedNumber({
 
   return (
     <span className={className}>
-      {prefix}
-      {display.toLocaleString("pl-PL", { maximumFractionDigits: decimals, minimumFractionDigits: decimals })}
-      {suffix}
+      {formatter
+        ? formatter(display)
+        : `${prefix}${display.toLocaleString("pl-PL", { maximumFractionDigits: decimals, minimumFractionDigits: decimals })}${suffix}`}
     </span>
   );
 }

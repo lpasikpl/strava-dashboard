@@ -2,6 +2,7 @@
 
 import type { PeriodCompare } from "@/lib/types";
 import { StatCard } from "./StatCard";
+import { formatHours } from "@/lib/utils";
 
 interface PeriodCompareRowProps {
   data: PeriodCompare;
@@ -12,7 +13,7 @@ export function PeriodCompareRow({ data }: PeriodCompareRowProps) {
 
   const stats = [
     { label: "Kilometry", value: current.distance_km, prev: previous.distance_km, suffix: " km" },
-    { label: "Godziny", value: current.hours, prev: previous.hours, suffix: "h", decimals: 1 },
+    { label: "Godziny", value: current.hours, prev: previous.hours, formatter: formatHours },
     { label: "Jazdy", value: current.rides, prev: previous.rides },
     { label: "Przewyższenia", value: current.elevation_m, prev: previous.elevation_m, suffix: " m" },
     { label: "Śr. NP", value: current.avg_np ?? 0, prev: previous.avg_np ?? undefined, suffix: " W" },
@@ -32,7 +33,7 @@ export function PeriodCompareRow({ data }: PeriodCompareRowProps) {
             value={s.value}
             prevValue={s.prev}
             suffix={s.suffix}
-            decimals={s.decimals}
+            formatter={s.formatter}
           />
         ))}
       </div>

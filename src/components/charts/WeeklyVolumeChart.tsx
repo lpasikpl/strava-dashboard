@@ -2,6 +2,7 @@
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import type { WeeklySummary } from "@/lib/types";
+import { formatHours } from "@/lib/utils";
 
 interface WeeklyVolumeChartProps {
   data: WeeklySummary[];
@@ -43,7 +44,7 @@ export function WeeklyVolumeChart({ data }: WeeklyVolumeChartProps) {
             }}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter={((value: any, name: any) => [
-              name === "tss" ? `${value ?? 0} TSS` : `${value ?? 0}h`,
+              name === "tss" ? `${value ?? 0} TSS` : formatHours(value ?? 0),
               name === "tss" ? "TSS" : "Godziny",
             ]) as any}
           />

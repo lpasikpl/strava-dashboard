@@ -3,7 +3,7 @@
 import type { YtdProgress } from "@/lib/types";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
-import { formatKm } from "@/lib/utils";
+import { formatKm, formatHours } from "@/lib/utils";
 
 interface GoalProgressCardProps {
   data: YtdProgress;
@@ -71,7 +71,7 @@ export function GoalProgressCard({ data }: GoalProgressCardProps) {
         </div>
         <div>
           <div className="text-xs text-[var(--text-muted)]">Godziny</div>
-          <div className="text-sm font-medium">{data.actual_hours}h</div>
+          <div className="text-sm font-medium">{formatHours(data.actual_hours)}</div>
         </div>
         <div>
           <div className="text-xs text-[var(--text-muted)]">Przewyższenia</div>

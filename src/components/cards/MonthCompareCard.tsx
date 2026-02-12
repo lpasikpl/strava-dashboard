@@ -3,6 +3,7 @@
 import type { MonthlyYoy } from "@/lib/types";
 import { StatCard } from "./StatCard";
 import { CURRENT_YEAR } from "@/lib/constants";
+import { formatHours } from "@/lib/utils";
 
 interface MonthCompareCardProps {
   data: MonthlyYoy[];
@@ -26,7 +27,7 @@ export function MonthCompareCard({ data }: MonthCompareCardProps) {
 
   const stats = [
     { label: "Kilometry", value: thisMonth.distance_km, prev: lastYearMonth?.distance_km, suffix: " km" },
-    { label: "Godziny", value: thisMonth.hours, prev: lastYearMonth?.hours, suffix: "h", decimals: 1 },
+    { label: "Godziny", value: thisMonth.hours, prev: lastYearMonth?.hours, formatter: formatHours },
     { label: "Jazdy", value: thisMonth.rides, prev: lastYearMonth?.rides },
     { label: "Przewyższenia", value: thisMonth.elevation_m, prev: lastYearMonth?.elevation_m, suffix: " m" },
     { label: "Śr. NP", value: thisMonth.avg_np ?? 0, prev: lastYearMonth?.avg_np ?? undefined, suffix: " W" },
@@ -46,7 +47,7 @@ export function MonthCompareCard({ data }: MonthCompareCardProps) {
             value={s.value}
             prevValue={s.prev}
             suffix={s.suffix}
-            decimals={s.decimals}
+            formatter={s.formatter}
           />
         ))}
       </div>

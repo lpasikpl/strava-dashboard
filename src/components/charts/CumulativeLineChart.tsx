@@ -4,6 +4,60 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import type { CumulativeDay, CumulativeByYear } from "@/lib/types";
 import { CURRENT_YEAR } from "@/lib/constants";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CustomTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+
+  const actual = payload.find((p: any) => p.dataKey === "actual")?.value as number | undefined;
+  const plan = payload.find((p: any) => p.dataKey === "plan")?.value as number | undefined;
+  const prev = payload.find((p: any) => p.dataKey === "prevYear")?.value as number | undefined;
+
+  const diff = actual != null && plan != null ? actual - plan : null;
+  const dateStr = new Date(CURRENT_YEAR, 0, Number(label)).toLocaleDateString("pl-PL", {
+    day: "numeric",
+    month: "long",
+  });
+
+  const fmt = (v: number) => v.toLocaleString("pl-PL", { maximumFractionDigits: 1 });
+
+  return (
+    <div
+      style={{
+        backgroundColor: "var(--bg-card)",
+        border: "1px solid var(--border)",
+        borderRadius: "8px",
+        padding: "10px 14px",
+        fontSize: 12,
+        color: "var(--text-primary)",
+      }}
+    >
+      <div style={{ marginBottom: 6, fontWeight: 500 }}>{dateStr}</div>
+      {actual != null && (
+        <div style={{ color: "#f97316" }}>{CURRENT_YEAR} : {fmt(actual)} km</div>
+      )}
+      {plan != null && (
+        <div style={{ color: "var(--text-muted)" }}>Plan : {fmt(plan)} km</div>
+      )}
+      {diff != null && (
+        <div
+          style={{
+            color: diff >= 0 ? "#34d399" : "#f87171",
+            fontWeight: 600,
+            marginTop: 4,
+            borderTop: "1px solid var(--border)",
+            paddingTop: 4,
+          }}
+        >
+          {diff >= 0 ? "+" : ""}{fmt(diff)} km
+        </div>
+      )}
+      {prev != null && (
+        <div style={{ color: "#3b82f6", marginTop: 4 }}>{CURRENT_YEAR - 1} : {fmt(prev)} km</div>
+      )}
+    </div>
+  );
+}
+
 interface CumulativeLineChartProps {
   currentYear: CumulativeDay[];
   prevYear: CumulativeByYear[];
@@ -50,24 +104,7 @@ export function CumulativeLineChart({ currentYear, prevYear }: CumulativeLineCha
             tickLine={false}
             tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
           />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "var(--bg-card)",
-              border: "1px solid var(--border)",
-              borderRadius: "8px",
-              color: "var(--text-primary)",
-              fontSize: 12,
-            }}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            formatter={((value: any, name: any) => [
-              `${(value ?? 0).toLocaleString("pl-PL")} km`,
-              name === "actual" ? CURRENT_YEAR : name === "prevYear" ? CURRENT_YEAR - 1 : "Plan",
-            ]) as any}
-            labelFormatter={(doy) => {
-              const d = new Date(CURRENT_YEAR, 0, Number(doy));
-              return d.toLocaleDateString("pl-PL", { day: "numeric", month: "long" });
-            }}
-          />
+          <Tooltip content={<CustomTooltip />} />
           <Area
             type="monotone"
             dataKey="actual"
