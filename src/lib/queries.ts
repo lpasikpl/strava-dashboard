@@ -34,12 +34,43 @@ export async function fetchMonthlyYoy(): Promise<MonthlyYoy[]> {
 }
 
 export async function fetchYearlyByType(): Promise<YearlyByType[]> {
-  const { data } = await supabase
-    .from("yearly_by_type")
-    .select("*")
-    .in("year", [CURRENT_YEAR, CURRENT_YEAR - 1])
-    .order("year", { ascending: false });
-  return data ?? [];
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const nextDay = (y: number, m: number, d: number) => {
+    const dt = new Date(y, m - 1, d + 1);
+    return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
+  };
+
+  const currentFrom = `${CURRENT_YEAR}-01-01`;
+  const currentTo = nextDay(CURRENT_YEAR, month, day);
+  const prevFrom = `${CURRENT_YEAR - 1}-01-01`;
+  const prevTo = nextDay(CURRENT_YEAR - 1, month, day);
+
+  const [currentAct, prevAct] = await Promise.all([
+    fetchActivitiesForPeriod(currentFrom, currentTo),
+    fetchActivitiesForPeriod(prevFrom, prevTo),
+  ]);
+
+  function aggregate(activities: Activity[], year: number): YearlyByType[] {
+    const groups = new Map<string, YearlyByType>();
+    for (const a of activities) {
+      const ride_type = a.sport_type === "VirtualRide" ? "Zwift" : a.sport_type === "GravelRide" ? "Gravel" : "Szosa";
+      const environment = a.sport_type === "VirtualRide" ? "Indoor" : "Outdoor";
+      const key = `${ride_type}|${environment}`;
+      const g = groups.get(key) ?? { year, ride_type, environment, rides: 0, hours: 0, distance_km: 0, elevation_m: 0, avg_np: null, total_tss: 0 };
+      g.rides += 1;
+      g.hours += a.moving_time_seconds / 3600;
+      g.distance_km += a.distance_meters / 1000;
+      g.elevation_m += a.total_elevation_gain;
+      g.total_tss += a.effective_tss ?? 0;
+      groups.set(key, g);
+    }
+    return Array.from(groups.values());
+  }
+
+  return [...aggregate(currentAct, CURRENT_YEAR), ...aggregate(prevAct, CURRENT_YEAR - 1)];
 }
 
 export async function fetchWeeklyNpHr(): Promise<WeeklyNpHr[]> {
