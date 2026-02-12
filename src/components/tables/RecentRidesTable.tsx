@@ -20,7 +20,6 @@ export function RecentRidesTable({ data }: RecentRidesTableProps) {
           <thead>
             <tr className="text-xs text-[var(--text-muted)] uppercase tracking-wider border-b border-[var(--border)]">
               <th className="text-left px-6 py-3">Data</th>
-              <th className="text-left px-4 py-3">Nazwa</th>
               <th className="text-left px-4 py-3">Typ</th>
               <th className="text-right px-4 py-3">km</th>
               <th className="text-right px-4 py-3">Czas</th>
@@ -28,7 +27,8 @@ export function RecentRidesTable({ data }: RecentRidesTableProps) {
               <th className="text-right px-4 py-3">NP</th>
               <th className="text-right px-4 py-3">IF</th>
               <th className="text-right px-4 py-3">TSS</th>
-              <th className="text-right px-6 py-3">HR</th>
+              <th className="text-right px-4 py-3">HR</th>
+              <th className="text-right px-6 py-3">NP/HR</th>
             </tr>
           </thead>
           <tbody>
@@ -45,9 +45,6 @@ export function RecentRidesTable({ data }: RecentRidesTableProps) {
                       day: "numeric",
                       month: "short",
                     })}
-                  </td>
-                  <td className="px-4 py-3 font-medium max-w-[200px] truncate">
-                    {ride.name}
                   </td>
                   <td className="px-4 py-3">
                     <span
@@ -76,8 +73,13 @@ export function RecentRidesTable({ data }: RecentRidesTableProps) {
                   <td className="text-right px-4 py-3">
                     {ride.effective_tss ?? "—"}
                   </td>
-                  <td className="text-right px-6 py-3 text-[var(--text-secondary)]">
+                  <td className="text-right px-4 py-3 text-[var(--text-secondary)]">
                     {ride.average_heartrate ? `${Math.round(ride.average_heartrate)}` : "—"}
+                  </td>
+                  <td className="text-right px-6 py-3 font-medium">
+                    {ride.normalized_power && ride.average_heartrate
+                      ? (ride.normalized_power / ride.average_heartrate).toFixed(2)
+                      : "—"}
                   </td>
                 </tr>
               );
