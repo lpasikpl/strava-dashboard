@@ -1,6 +1,5 @@
 export function formatKm(km: number): string {
-  if (km >= 1000) return `${(km / 1000).toFixed(1)}k`;
-  return km.toFixed(0);
+  return Math.round(km).toLocaleString("pl-PL");
 }
 
 export function formatHours(hours: number): string {

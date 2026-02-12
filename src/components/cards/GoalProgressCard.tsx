@@ -14,7 +14,7 @@ export function GoalProgressCard({ data }: GoalProgressCardProps) {
   const isAhead = aheadBehind >= 0;
 
   return (
-    <div className="rounded-xl bg-[var(--bg-card)] border border-[var(--border)] p-6">
+    <div className="rounded-xl bg-[var(--bg-card)] border border-[var(--border)] p-6 h-full">
       <h2 className="text-sm font-medium text-[var(--text-secondary)] mb-4">
         Cel {data.year}: {formatKm(data.goal_km)} km
       </h2>

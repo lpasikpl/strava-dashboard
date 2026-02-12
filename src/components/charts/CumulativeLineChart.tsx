@@ -20,7 +20,7 @@ export function CumulativeLineChart({ currentYear, prevYear }: CumulativeLineCha
   }));
 
   return (
-    <div className="rounded-xl bg-[var(--bg-card)] border border-[var(--border)] p-6">
+    <div className="rounded-xl bg-[var(--bg-card)] border border-[var(--border)] p-6 h-full">
       <h2 className="text-sm font-medium text-[var(--text-secondary)] mb-4">
         Kumulatywne kilometry — {CURRENT_YEAR}
       </h2>
