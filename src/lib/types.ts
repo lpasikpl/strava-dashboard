@@ -119,6 +119,21 @@ export interface Activity {
   has_power_data: boolean;
 }
 
+export interface PeriodStats {
+  distance_km: number;
+  hours: number;
+  rides: number;
+  elevation_m: number;
+  avg_np: number | null;
+  active_days: number;
+}
+
+export interface PeriodCompare {
+  current: PeriodStats;
+  previous: PeriodStats;
+  label: string;
+}
+
 export interface DashboardData {
   ytdProgress: YtdProgress | null;
   cumulativeDaily: CumulativeDay[];
@@ -131,4 +146,6 @@ export interface DashboardData {
   trainingLoad: TrainingLoadDay[];
   weeklySummaries: WeeklySummary[];
   recentActivities: Activity[];
+  ytdCompare: PeriodCompare;
+  monthPartialCompare: PeriodCompare;
 }

@@ -2,7 +2,7 @@ import { fetchDashboardData } from "@/lib/queries";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 import { GoalProgressCard } from "@/components/cards/GoalProgressCard";
 import { CumulativeLineChart } from "@/components/charts/CumulativeLineChart";
-import { MonthCompareCard } from "@/components/cards/MonthCompareCard";
+import { PeriodCompareRow } from "@/components/cards/PeriodCompareRow";
 import { YearByTypeCard } from "@/components/cards/YearByTypeCard";
 import { NpHrWeeklyChart } from "@/components/charts/NpHrWeeklyChart";
 import { NpHrOverlayChart } from "@/components/charts/NpHrOverlayChart";
@@ -34,9 +34,10 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Sekcja B: Bieżący miesiąc */}
-      <section>
-        <MonthCompareCard data={data.monthlyYoy} />
+      {/* Sekcja B: YTD + Bieżący miesiąc */}
+      <section className="space-y-6">
+        <PeriodCompareRow data={data.ytdCompare} />
+        <PeriodCompareRow data={data.monthPartialCompare} />
       </section>
 
       {/* Sekcja C: Sumy po typie */}
