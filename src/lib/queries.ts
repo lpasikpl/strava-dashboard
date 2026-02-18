@@ -101,12 +101,13 @@ export async function fetchWeeklySummaries(limit = 12): Promise<WeeklySummary[]>
   return (data ?? []).reverse();
 }
 
-export async function fetchRecentActivities(): Promise<Activity[]> {
+export async function fetchRecentActivities(year = CURRENT_YEAR): Promise<Activity[]> {
   const { data } = await supabase
     .from("activities")
     .select("id,strava_activity_id,name,sport_type,start_date,elapsed_time_seconds,moving_time_seconds,distance_meters,total_elevation_gain,average_speed,average_watts,normalized_power,intensity_factor,tss,effective_tss,average_heartrate,max_heartrate,has_power_data")
     .eq("is_ride", true)
-    .gte("start_date", `${CURRENT_YEAR}-01-01`)
+    .gte("start_date", `${year}-01-01`)
+    .lt("start_date", `${year + 1}-01-01`)
     .order("start_date", { ascending: false });
   return data ?? [];
 }
@@ -203,6 +204,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
     trainingLoad,
     weeklySummaries,
     recentActivities,
+    prevYearActivities,
     ytdCompare,
     monthPartialCompare,
   ] = await Promise.all([
@@ -217,6 +219,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
     fetchTrainingLoad(),
     fetchWeeklySummaries(),
     fetchRecentActivities(),
+    fetchRecentActivities(CURRENT_YEAR - 1),
     fetchPeriodCompare("ytd"),
     fetchPeriodCompare("month"),
   ]);
@@ -233,6 +236,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
     trainingLoad,
     weeklySummaries,
     recentActivities,
+    prevYearActivities,
     ytdCompare,
     monthPartialCompare,
   };

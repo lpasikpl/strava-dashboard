@@ -148,6 +148,7 @@ export interface DashboardData {
   trainingLoad: TrainingLoadDay[];
   weeklySummaries: WeeklySummary[];
   recentActivities: Activity[];
+  prevYearActivities: Activity[];
   ytdCompare: PeriodCompare;
   monthPartialCompare: PeriodCompare;
 }

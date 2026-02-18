@@ -73,8 +73,9 @@ export default async function Home() {
       </section>
 
       {/* Sekcja G: Tabela jazd */}
-      <section>
-        <RecentRidesTable data={data.recentActivities} />
+      <section className="space-y-6">
+        <RecentRidesTable data={data.recentActivities} title="Wszystkie jazdy 2026" />
+        <RecentRidesTable data={data.prevYearActivities} title="Wszystkie jazdy 2025" />
       </section>
     </DashboardShell>
   );

@@ -7,6 +7,7 @@ import Link from "next/link";
 
 interface RecentRidesTableProps {
   data: Activity[];
+  title?: string;
 }
 
 const MONTH_NAMES = [
@@ -127,7 +128,7 @@ function MonthSection({ group, defaultOpen }: { group: ReturnType<typeof groupBy
   );
 }
 
-export function RecentRidesTable({ data }: RecentRidesTableProps) {
+export function RecentRidesTable({ data, title = "Wszystkie jazdy 2026" }: RecentRidesTableProps) {
   const groups = groupByMonth(data);
   const currentKey = (() => {
     const now = new Date();
@@ -138,7 +139,7 @@ export function RecentRidesTable({ data }: RecentRidesTableProps) {
     <div className="rounded-xl bg-[var(--bg-card)] border border-[var(--border)] overflow-hidden">
       <div className="px-6 py-4 border-b border-[var(--border)]">
         <h2 className="text-sm font-medium text-[var(--text-secondary)]">
-          Wszystkie jazdy 2026
+          {title}
         </h2>
       </div>
       <div className="overflow-x-auto">
