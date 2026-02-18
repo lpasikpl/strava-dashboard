@@ -125,7 +125,9 @@ function aggregateActivities(activities: Activity[]): PeriodStats {
   const uniqueDays = new Set(activities.map((a) => a.start_date.slice(0, 10)));
   const active_days = uniqueDays.size;
 
-  return { distance_km, hours, rides, elevation_m, avg_np, active_days };
+  const total_tss = Math.round(activities.reduce((s, a) => s + (a.effective_tss ?? 0), 0));
+
+  return { distance_km, hours, rides, elevation_m, avg_np, active_days, total_tss };
 }
 
 async function fetchActivitiesForPeriod(from: string, to: string): Promise<Activity[]> {

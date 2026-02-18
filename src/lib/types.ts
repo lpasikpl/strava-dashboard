@@ -126,6 +126,7 @@ export interface PeriodStats {
   elevation_m: number;
   avg_np: number | null;
   active_days: number;
+  total_tss: number;
 }
 
 export interface PeriodCompare {

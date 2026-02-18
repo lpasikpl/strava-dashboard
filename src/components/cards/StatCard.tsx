@@ -27,7 +27,7 @@ export function StatCard({ label, value, prevValue, decimals = 0, suffix = "", p
           formatter={formatter}
         />
         {prevValue !== undefined && (
-          <DeltaBadge current={value} previous={prevValue} valueSuffix={suffix} valueDecimals={decimals} />
+          <DeltaBadge current={value} previous={prevValue} valueSuffix={suffix} valueDecimals={decimals} formatter={formatter} />
         )}
       </div>
     </div>
