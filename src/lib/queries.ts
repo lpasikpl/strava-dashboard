@@ -92,13 +92,13 @@ export async function fetchTrainingLoad(): Promise<TrainingLoadDay[]> {
   return data ?? [];
 }
 
-export async function fetchWeeklySummaries(limit = 12): Promise<WeeklySummary[]> {
+export async function fetchWeeklySummaries(): Promise<WeeklySummary[]> {
   const { data } = await supabase
     .from("weekly_summary")
     .select("*")
-    .order("week_start", { ascending: false })
-    .limit(limit);
-  return (data ?? []).reverse();
+    .gte("week_start", "2025-01-01")
+    .order("week_start", { ascending: true });
+  return data ?? [];
 }
 
 export async function fetchRecentActivities(year = CURRENT_YEAR): Promise<Activity[]> {
