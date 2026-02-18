@@ -2,6 +2,7 @@
 
 import type { Activity } from "@/lib/types";
 import { formatDuration, getRideType, getRideColor, formatKm } from "@/lib/utils";
+import Link from "next/link";
 
 interface RecentRidesTableProps {
   data: Activity[];
@@ -40,11 +41,18 @@ export function RecentRidesTable({ data }: RecentRidesTableProps) {
                   key={ride.id}
                   className="border-t border-[var(--border)] hover:bg-[var(--bg-card-hover)] transition-colors"
                 >
-                  <td className="px-6 py-3 text-[var(--text-secondary)] whitespace-nowrap">
-                    {new Date(ride.start_date).toLocaleDateString("pl-PL", {
-                      day: "numeric",
-                      month: "short",
-                    })}
+                  <td className="px-6 py-3 whitespace-nowrap">
+                    <Link
+                      href={`https://www.strava.com/activities/${ride.strava_activity_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--text-secondary)] hover:text-orange-400 transition-colors"
+                    >
+                      {new Date(ride.start_date).toLocaleDateString("pl-PL", {
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </Link>
                   </td>
                   <td className="px-4 py-3">
                     <span
