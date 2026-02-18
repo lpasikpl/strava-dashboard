@@ -62,7 +62,7 @@ function MonthSection({ group, defaultOpen }: { group: ReturnType<typeof groupBy
       {open && (
         <table className="w-full text-sm">
           <tbody>
-            {group.rides.map((ride) => {
+            {group.rides.filter((r) => r.distance_meters >= 5000).map((ride) => {
               const type = getRideType(ride.sport_type);
               const color = getRideColor(ride.sport_type);
               return (
