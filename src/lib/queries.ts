@@ -127,7 +127,12 @@ function aggregateActivities(activities: Activity[]): PeriodStats {
 
   const total_tss = Math.round(activities.reduce((s, a) => s + (a.effective_tss ?? 0), 0));
 
-  return { distance_km, hours, rides, elevation_m, avg_np, active_days, total_tss };
+  const longRides = activities.filter((a) => a.moving_time_seconds > 3600);
+  const avg_distance_km = longRides.length > 0
+    ? longRides.reduce((s, a) => s + a.distance_meters, 0) / longRides.length / 1000
+    : null;
+
+  return { distance_km, hours, rides, elevation_m, avg_np, active_days, total_tss, avg_distance_km };
 }
 
 async function fetchActivitiesForPeriod(from: string, to: string): Promise<Activity[]> {

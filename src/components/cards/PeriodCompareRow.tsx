@@ -18,6 +18,7 @@ export function PeriodCompareRow({ data }: PeriodCompareRowProps) {
     { label: "Przewyższenia", value: current.elevation_m, prev: previous.elevation_m, suffix: " m" },
     { label: "Śr. NP", value: current.avg_np ?? 0, prev: previous.avg_np ?? undefined, suffix: " W" },
     { label: "TSS", value: current.total_tss, prev: previous.total_tss },
+    { label: "Śr. dystans (>1h)", value: current.avg_distance_km ?? 0, prev: previous.avg_distance_km ?? undefined, suffix: " km", decimals: 1 },
     { label: "Aktywne dni", value: current.active_days, prev: previous.active_days },
   ];
 
@@ -26,7 +27,7 @@ export function PeriodCompareRow({ data }: PeriodCompareRowProps) {
       <h2 className="text-sm font-medium text-[var(--text-secondary)] mb-3 capitalize">
         {label}
       </h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
         {stats.map((s) => (
           <StatCard
             key={s.label}

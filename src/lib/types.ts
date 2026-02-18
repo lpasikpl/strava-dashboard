@@ -127,6 +127,7 @@ export interface PeriodStats {
   avg_np: number | null;
   active_days: number;
   total_tss: number;
+  avg_distance_km: number | null;
 }
 
 export interface PeriodCompare {
